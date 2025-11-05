@@ -25,4 +25,6 @@ require("lazy").setup({
     require("plugins.blink"),
 
     { "mason-org/mason.nvim", opts = {} },
+
+    require("plugins.vim-illuminate"),
 })
