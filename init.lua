@@ -1,4 +1,15 @@
 require("options")
-require("plugins")
+
+if vim.g.vscode then
+    -- do not load plugins
+else
+   require("plugins")
+end
+
 require("keymaps")
-require("lsp")
+
+if vim.g.vscode then
+    -- do not setup lsp
+else
+    require("lsp")
+end

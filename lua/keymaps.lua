@@ -4,8 +4,6 @@ local opts = {
     silent = true,       -- do not show message
 }
 
-
-
 -----------------
 --- Tabs move ---
 -----------------
@@ -35,11 +33,15 @@ vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', opts)
 vim.keymap.set('v', '<', '<gv', opts)
 vim.keymap.set('v', '>', '>gv', opts)
 
------------------
---- Telescope ---
------------------
-local telescopt_builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', telescopt_builtin.find_files, { desc = 'Telescope find files' })
-vim.keymap.set('n', '<leader>fg', telescopt_builtin.live_grep, { desc = 'Telescope live grep' })
-vim.keymap.set('n', '<leader>fb', telescopt_builtin.buffers, { desc = 'Telescope buffers' })
-vim.keymap.set('n', '<leader>fh', telescopt_builtin.help_tags, { desc = 'Telescope help tags' })
+if vim.g.vscode then
+    -- do not load telescope keymaps
+else
+    -----------------
+    --- Telescope ---
+    -----------------
+    local telescopt_builtin = require('telescope.builtin')
+    vim.keymap.set('n', '<leader>ff', telescopt_builtin.find_files, { desc = 'Telescope find files' })
+    vim.keymap.set('n', '<leader>fg', telescopt_builtin.live_grep, { desc = 'Telescope live grep' })
+    vim.keymap.set('n', '<leader>fb', telescopt_builtin.buffers, { desc = 'Telescope buffers' })
+    vim.keymap.set('n', '<leader>fh', telescopt_builtin.help_tags, { desc = 'Telescope help tags' })
+end
