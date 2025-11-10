@@ -27,4 +27,6 @@ require("lazy").setup({
     { "mason-org/mason.nvim", opts = {} },
 
     require("plugins.vim-illuminate"),
+
+    require("plugins.auto-session"),
 })
