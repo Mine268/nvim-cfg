@@ -9,9 +9,9 @@
 | 项目 | 版本/说明 |
 |------|----------|
 | Neovim | v0.12.1 |
-| 操作系统 | Windows |
+| 操作系统 | macOS / Windows |
 | 包管理器 | [lazy.nvim](https://github.com/folke/lazy.nvim) |
-| 终端 | Windows Terminal + PowerShell 7 (`pwsh.exe`) |
+| 终端 | macOS: Alacritty / iTerm2 / Terminal.app；Windows: Windows Terminal + PowerShell 7 (`pwsh.exe`) |
 | Leader 键 | `<Space>` |
 
 ---
@@ -128,7 +128,7 @@
 - **特殊说明**：
   - **dap-ui 标签页模式**：调试开始时自动新建一个标签页打开 dap-ui，与代码编辑标签页分离。按 `<leader>du` 可在 debug 标签页和代码标签页之间切换/关闭。
   - **Windows 闪退规避**：`event_terminated` / `event_exited` 上调用 `dapui.close()` 会导致 nvim 在 Windows 下闪退，已移除这两个自动关闭监听器。
-  - **codelldb 手动安装**：mason 自动安装进程被杀，当前使用手动解压的 `.vsix` 文件，路径硬编码。若 mason 目录结构变化需重新验证。
+  - **codelldb 自动查找**：`dap.lua` 优先从 `PATH` 查找 `codelldb`（如 Homebrew 安装），其次回退到 mason 目录，自动适配操作系统（Windows 加 `.exe`，macOS/Linux 不加）。找不到时仅弹警告，不阻塞启动。
 
 ---
 
@@ -138,7 +138,7 @@
 
 | 名称 | 安装位置 | 用途 | 维护注意 |
 |------|---------|------|---------|
-| **codelldb** | `%LOCALAPPDATA%\nvim-data\mason\packages\codelldb\extension\adapter\codelldb.exe` | C/C++ 调试适配器 | 手动解压 `.vsix`；路径在 `dap.lua` 中硬编码 |
+| **codelldb** | 系统 PATH 或 `<data>/mason/packages/codelldb/extension/adapter/codelldb` | C/C++ 调试适配器 | macOS 推荐 `brew install llvm`；Windows 可手动解压 `.vsix` 到 mason 目录 |
 | **ripgrep** | 系统 PATH | telescope `live_grep` | 需系统级安装 |
 | **PowerShell 7** | 系统 PATH | toggleterm 默认 shell | 需系统级安装 `pwsh.exe` |
 
@@ -149,8 +149,9 @@
 1. **treesitter 补丁耐久性**
    - `nvim-treesitter` 的 `query_predicates.lua` 手动打过补丁以兼容 nvim 0.12 的 `TSNode[]` 捕获。lazy.nvim 更新该插件后会覆盖补丁，需重新应用。
 
-2. **codelldb 路径硬编码**
-   - `dap.lua` 中 codelldb 的 `command` 是绝对路径。若 mason 目录结构变化或换机迁移，需修改该路径。
+2. **codelldb 安装**
+   - macOS：通过 Homebrew `brew install llvm`，`codelldb` 自动加入 PATH。
+   - Windows：可手动将 `.vsix` 解压到 mason 目录，或同样确保 `codelldb.exe` 在 PATH 中。
 
 3. **Windows Terminal 键位拦截**
    - `<C-w>` 被 Windows Terminal 拦截，终端模式窗口切换使用 `<A-h/j/k/l>`。

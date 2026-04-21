@@ -6,7 +6,7 @@ return {
             direction = "horizontal",
             size = 15,
             open_mapping = [[<c-\>]],
-            shell = "pwsh.exe",
+            shell = vim.o.shell,
             hide_numbers = true,
             shade_terminals = true,
             start_in_insert = true,

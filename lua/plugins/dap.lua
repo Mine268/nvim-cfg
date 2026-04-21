@@ -11,15 +11,33 @@ return {
             local dap = require("dap")
             local dapui = require("dapui")
 
-            -- 手动配置 codelldb
-            dap.adapters.codelldb = {
-                type = "server",
-                port = "${port}",
-                executable = {
-                    command = "C:/Users/mine268/AppData/Local/nvim-data/mason/packages/codelldb/extension/adapter/codelldb.exe",
-                    args = { "--port", "${port}" },
-                },
-            }
+            -- 查找 codelldb：优先 PATH，其次 mason 目录
+            local function find_codelldb()
+                local from_path = vim.fn.exepath("codelldb")
+                if from_path and from_path ~= "" then
+                    return from_path
+                end
+                local ext = vim.fn.has("win32") == 1 and ".exe" or ""
+                local mason_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb" .. ext
+                if vim.fn.filereadable(mason_path) == 1 then
+                    return mason_path
+                end
+                return nil
+            end
+
+            local codelldb_path = find_codelldb()
+            if codelldb_path then
+                dap.adapters.codelldb = {
+                    type = "server",
+                    port = "${port}",
+                    executable = {
+                        command = codelldb_path,
+                        args = { "--port", "${port}" },
+                    },
+                }
+            else
+                vim.notify("codelldb not found in PATH or mason. C/C++ debugging unavailable.", vim.log.levels.WARN)
+            end
 
             dap.configurations.cpp = {
                 {

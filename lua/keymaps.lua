@@ -51,13 +51,16 @@ vim.keymap.set('t', '<A-j>', [[<C-\><C-n><C-w>j]], opts)
 vim.keymap.set('t', '<A-h>', [[<C-\><C-n><C-w>h]], opts)
 vim.keymap.set('t', '<A-l>', [[<C-\><C-n><C-w>l]], opts)
 
+-- VS Code Neovim 模式下跳过插件相关键位
+if not vim.g.vscode then
+
 -----------------
 --- LSP docs  ---
 -----------------
 -- gh: 快速查看光标下符号的文档（与 0.12 默认的 K 键功能相同，多一个选择）
-vim.keymap.set('n', 'gh', vim.lsp.buf.hover, { desc = 'LSP hover docs' })
+vim.keymap.set("n", "gh", vim.lsp.buf.hover, { desc = "LSP hover docs" })
 -- gs: 查看当前函数的签名
-vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, { desc = 'LSP signature help' })
+vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, { desc = "LSP signature help" })
 
 -----------------
 --- Telescope ---
@@ -69,4 +72,6 @@ if ok then
     vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, { desc = 'Telescope live grep' })
     vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, { desc = 'Telescope buffers' })
     vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, { desc = 'Telescope help tags' })
+end
+
 end
